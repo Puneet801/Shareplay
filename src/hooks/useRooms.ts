@@ -129,27 +129,47 @@ export function useJoinRoom() {
       if (!user) throw new Error("Not authenticated");
 
       // Find room by ID or slug
-      let { data: room } = await supabase.from("rooms").select("id").eq("id", roomIdOrSlug).maybeSingle();
+      let { data: room, error: roomError } = await supabase
+        .from("rooms")
+        .select("id")
+        .eq("id", roomIdOrSlug)
+        .maybeSingle();
+
       if (!room) {
-        ({ data: room } = await supabase.from("rooms").select("id").eq("slug", roomIdOrSlug).maybeSingle());
+        const slugResult = await supabase
+          .from("rooms")
+          .select("id")
+          .eq("slug", roomIdOrSlug)
+          .maybeSingle();
+
+        room = slugResult.data;
+        roomError = slugResult.error;
       }
+
+      if (roomError) throw roomError;
       if (!room) throw new Error("Room not found");
 
       // Join as member
       const { error } = await supabase
         .from("room_members")
-        .insert({ room_id: room.id, user_id: user.id })
-        .select()
-        .single();
+        .insert({ room_id: room.id, user_id: user.id });
 
-      // Ignore duplicate key error (already a member)
-      if (error && !error.message.includes("duplicate")) throw error;
+      // Ignore duplicate key error (already joined)
+      if (
+        error &&
+        !error.message.toLowerCase().includes("duplicate") &&
+        !error.message.toLowerCase().includes("unique")
+      ) {
+        throw error;
+      }
+
       return room;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["rooms"] });
+      toast.success("Joined room!");
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err: any) => toast.error(err.message || "Failed to join room"),
   });
 }
 
