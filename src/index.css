@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 6% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 6% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 234 89% 74%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 234 89% 74%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 234 89% 74%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 240 6% 6%;
+    --sidebar-foreground: 240 5% 65%;
+    --sidebar-primary: 234 89% 74%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4% 16%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 234 89% 74%;
+
+    /* Custom tokens */
+    --surface: 240 6% 8%;
+    --surface-hover: 240 5% 12%;
+    --glass: 240 6% 8%;
+    --glass-border: 0 0% 100%;
+    --indigo: 234 89% 74%;
+    --indigo-glow: 234 89% 64%;
+    --emerald: 160 84% 39%;
+    --amber: 38 92% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass-surface {
+    @apply bg-card/50 backdrop-blur-xl border border-white/10 rounded-2xl;
+  }
+
+  .glass-surface-sm {
+    @apply bg-card/50 backdrop-blur-xl border border-white/10 rounded-xl;
+  }
+
+  .glass-surface-subtle {
+    @apply bg-card/30 backdrop-blur-md border border-white/5 rounded-2xl;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60;
+  }
+
+  .glow-indigo {
+    box-shadow: 0 0 40px -10px hsl(234, 89%, 74%, 0.4);
+  }
+
+  .glow-indigo-sm {
+    box-shadow: 0 0 20px -5px hsl(234, 89%, 74%, 0.3);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-mono-code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
